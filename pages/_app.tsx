@@ -4,11 +4,9 @@ import { AccountProvider } from '../contexts/AccountContext'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <>
-      <AccountProvider account={pageProps.account}>
-        <Component {...pageProps} />
-      </AccountProvider>
-    </>
+    <AccountProvider account={pageProps.account}>
+      <Component {...pageProps} />
+    </AccountProvider>
   )
 }
 
