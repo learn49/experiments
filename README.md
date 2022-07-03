@@ -1,4 +1,4 @@
-The goal of this experiment is to show how to use NextJS _middlewares in a way we can cache pages on Vercel and incremantally generate new pages for new tenants.
+The goal of this experiment is to show how to use NextJS \_middlewares in a way we can cache pages on Vercel and incremantally generate new pages for new tenants.
 
 - A valid tenant: https://devpleno.experiment.learn49.com/
 - An invalid tenant: https://anything.experiment.learn49.com/
