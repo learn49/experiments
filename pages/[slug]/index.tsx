@@ -11,8 +11,8 @@ const Home: NextPage = () => {
       <Head>
         <title>{account?.friendlyName}</title>
       </Head>
-      <h1>Welcome {account?.friendlyName}</h1>
-      <p>
+      <h1 >Welcome {account?.friendlyName}</h1>
+      <p className="text-blue-600">
         <Link href='/about'>
           <a>About</a>
         </Link>
