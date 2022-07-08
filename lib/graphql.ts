@@ -1,3 +1,4 @@
 import { createClient } from "urql";
-const url = "https://api.learn49.com/graphql";
+const url = process.env.NEXT_PUBLIC_API;
+
 export const client = createClient({ url });

@@ -5,21 +5,7 @@ import Link from "next/link";
 import { useQuery } from "urql";
 import { useAccount } from "../../contexts/AccountContext";
 
-const teste = `query{
-  getAccountSettingsByDomain(domain: "devpleno.learn49.com"){
-    id
-    friendlyName
-  }
-}`;
 const Home: NextPage = () => {
-  const [result, reexecuteQuery] = useQuery({
-    query: teste,
-  });
-
-  const { data, fetching, error } = result;
-
-  if (fetching) return <p>Loading...</p>;
-  if (error) return <p>Oh no... {error.message}</p>;
   const account = useAccount();
   return (
     <div>
@@ -27,7 +13,6 @@ const Home: NextPage = () => {
         <title>{account?.friendlyName}</title>
       </Head>
       <h1>Welcome hugo! {account?.friendlyName}</h1>
-      <pre>{JSON.stringify(data)}</pre>
       <p>
         <Link href="/about">
           <a>hugo-About</a>
