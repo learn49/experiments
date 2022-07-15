@@ -110,7 +110,7 @@ export default function Signup() {
                 </Label>
                 <Button
                   className="mt-4 dark:text-gray-200"
-                  // block
+                  block={false}
                   size="large"
                   type="submit"
                 >
