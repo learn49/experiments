@@ -1,15 +1,16 @@
 import { NextPage } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import logo from '../../public/devpleno.svg'
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
+import { useAccount } from '../../contexts/AccountContext'
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email('Email inválido').required('Campo obrigatório'),
   password: Yup.string().required('Campo obrigatório'),
 })
 const Login: NextPage = () => {
+  const account = useAccount()
   const form = useFormik({
     validateOnChange: false,
     validateOnMount: false,
@@ -26,11 +27,13 @@ const Login: NextPage = () => {
   return (
     <div className={`min-h-screen bg-gray-50 dark:bg-gray-900`}>
       <div className='flex flex-col md:flex-row h-screen overflow-y-auto'>
-        <div className=' flex h-64 md:h-auto w-full md:w-1/2 bg-initial bg-cover bg-center'></div>
+        <div className='relative flex h-64 md:h-auto w-full md:w-1/2'>
+          <Image src ={'/login.png'} layout= 'fill' objectFit='cover'/>
+        </div>
         <main className='flex justify-center items-center md:w-1/2 p-6 sm:px-8 '>
           <div className='w-full max-w-lg'>
             <h1 className='mb-4 text-xl font-semibold text-gray-600 dark:text-gray-200 capitalize'>
-              friendlyName
+              {account?.friendlyName}
             </h1>
             <p className='-mt-5 mb-3 text-gray-500 '>Faça seu login ou cadastre-se</p>
             <form onSubmit={form.handleSubmit}>
@@ -105,7 +108,7 @@ const Login: NextPage = () => {
                 </a>
               </Link>
               <div className='text-right'>
-                <Image src={logo} alt='Logo' height={25} width={81} />
+                <Image src={'/devpleno.svg'} alt='Logo' height={25} width={81} />
               </div>
             </div>
           </div>
