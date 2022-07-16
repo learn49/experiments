@@ -28,7 +28,7 @@ const Login: NextPage = () => {
     <div className={`min-h-screen bg-gray-50 dark:bg-gray-900`}>
       <div className='flex flex-col md:flex-row h-screen overflow-y-auto'>
         <div className='relative flex h-64 md:h-auto w-full md:w-1/2'>
-          <Image src ={'/login.png'} layout= 'fill' objectFit='cover'/>
+          <Image src ={'/login.png'} layout= 'fill' objectFit='cover' priority/>
         </div>
         <main className='flex justify-center items-center md:w-1/2 p-6 sm:px-8 '>
           <div className='w-full max-w-lg'>
@@ -47,6 +47,7 @@ const Login: NextPage = () => {
                   onChange={form.handleChange}
                   onBlur={form.handleBlur}
                   placeholder='Digite seu email'
+                  autoComplete='email'
                   className='
                   block w-full px-3 py-2 
                   bg-white dark:bg-gray-700
@@ -67,6 +68,7 @@ const Login: NextPage = () => {
                   onChange={form.handleChange}
                   onBlur={form.handleBlur}
                   placeholder='Digite sua senha'
+                  autoComplete='current-password'
                   className='
                   block w-full px-3 py-2 
                   bg-white dark:bg-gray-700
