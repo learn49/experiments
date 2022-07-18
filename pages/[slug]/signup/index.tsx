@@ -1,5 +1,5 @@
 import { Formik, Field, Form, FormikHelpers } from "formik";
-import ReCAPTCHA from "react-google-recaptcha";
+import ReCaptcha from "react-google-recaptcha";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "./Button";
@@ -17,7 +17,8 @@ interface SignupValues {
 }
 
 export default function Signup() {
-  const captchaRef = useRef();
+  const siteKey = process.env.RECAPTCHA_SITE_KEY;
+  const captchaRef = useRef<ReCAPTCHA | undefined>();
 
   const handleSubmit = (
     values: SignupValues,
@@ -137,11 +138,7 @@ export default function Signup() {
               </div>
             </div>
             {siteKey && (
-              <ReCaptcha
-                ref={captchaRef}
-                size="invisible"
-                sitekey={process.env.RECAPTCHA_SITE_KEY}
-              />
+              <ReCaptcha ref={captchaRef} size="invisible" sitekey={siteKey} />
             )}
           </div>
         </main>
