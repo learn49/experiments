@@ -6,7 +6,7 @@ interface ILabelProps {
 
 export function Label({ children, className, ...rest }: ILabelProps) {
   return (
-    <label {...rest} className={className}>
+    <label {...rest} className={`block ${className}`}>
       {children}
     </label>
   );

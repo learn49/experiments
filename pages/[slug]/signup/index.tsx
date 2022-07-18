@@ -1,8 +1,12 @@
 import { Formik, Field, Form, FormikHelpers } from "formik";
+import ReCAPTCHA from "react-google-recaptcha";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "./Button";
 import { Label } from "./Label";
+
+import DevplenoLogo from "../../../public/devpleno.svg";
+import { useRef } from "react";
 
 interface SignupValues {
   firstName: string;
@@ -13,6 +17,8 @@ interface SignupValues {
 }
 
 export default function Signup() {
+  const captchaRef = useRef();
+
   const handleSubmit = (
     values: SignupValues,
     { setSubmitting }: FormikHelpers<SignupValues>
@@ -24,7 +30,7 @@ export default function Signup() {
   };
 
   return (
-    <div className={`min-h-screen bg-gray-50 dark:bg-gray-900`}>
+    <div className={`min-h-screen bg-gray-50 dark:bg-gray-900 `}>
       <div className="flex flex-col h-screen overflow-y-auto md:flex-row">
         <div className="bg-initial flex bg-cover bg-center w-full md:w-1/2 h-64 md:h-auto"></div>
         <main className="flex justify-center items-center p-6 sm:px-8 md:w-1/2">
@@ -46,47 +52,47 @@ export default function Signup() {
               onSubmit={handleSubmit}
             >
               <Form>
-                <Label className="dark:text-gray-200">
-                  <span>Nome</span>
+                <Label>
+                  <span className="block">Nome</span>
                   <Field
-                    className="mt-1 border border-opacity-50"
+                    className="mt-1 border border-opacity-50 w-full text-sm rounded-md p-2 "
                     type="text"
                     id="firstName"
                     placeholder="Nome"
                     name="firstName"
                   />
                 </Label>
-                <Label className="mt-2 dark:text-gray-200">
-                  <span>Último Nome</span>
+                <Label className="mt-2 block">
+                  <span className="block">Último Nome</span>
                   <Field
-                    css="mt-1 border border-opacity-50 border-gray-200"
+                    className="mt-1 border border-opacity-50 w-full text-sm rounded-md p-2"
                     type="text"
                     id="lastName"
                     placeholder="Nome"
                     name="lastName"
                   />
                 </Label>
-                <Label className="mt-2 dark:text-gray-200">
-                  <span>Email</span>
+                <Label className="mt-2">
+                  <span className="block">Email</span>
                   <Field
-                    className="mt-1 border border-opacity-50 border-gray-200"
+                    className="mt-1 border border-opacity-50 w-full text-sm rounded-md p-2"
                     type="email"
                     id="email"
                     placeholder="Digite seu email"
                     name="email"
                   />
                 </Label>
-                <Label className="mt-2 dark:text-gray-200">
-                  <span>Senha</span>
+                <Label className="mt-2">
+                  <span className="block">Senha</span>
                   <Field
-                    className="mt-1 border border-opacity-50 border-gray-200"
+                    className="mt-1 border border-opacity-50 w-full text-sm rounded-md p-2"
                     type="password"
                     id="password"
                     placeholder="Digite sua senha"
                     name="password"
                   />
                 </Label>
-                <Label check className="mt-2 dark:text-gray-200">
+                <Label check className="mt-2">
                   <Field className="" type="checkbox" name="acceptTerms" />
                   <span className="ml-2">
                     Criar uma conta significa que você concorda com nossos{" "}
@@ -109,7 +115,7 @@ export default function Signup() {
                   </span>
                 </Label>
                 <Button
-                  className="mt-4 dark:text-gray-200"
+                  className="mt-4 w-full bg-purple-600 rounded-md text-white text-lg font-bold py-3 hover:bg-purple-600"
                   block={false}
                   size="large"
                   type="submit"
@@ -127,12 +133,16 @@ export default function Signup() {
                 </a>
               </Link>
               <div className="text-right">
-                <Image src="/devpleno.svg" alt="Logo" height={25} width={81} />
+                <Image src={DevplenoLogo} alt="Logo" height={25} width={81} />
               </div>
             </div>
-            {/* {siteKey && (
-              <ReCaptcha ref={captchaRef} size="invisible" sitekey={siteKey} />
-            )} */}
+            {siteKey && (
+              <ReCaptcha
+                ref={captchaRef}
+                size="invisible"
+                sitekey={process.env.RECAPTCHA_SITE_KEY}
+              />
+            )}
           </div>
         </main>
       </div>
