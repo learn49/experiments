@@ -18,8 +18,8 @@ interface SignupValues {
 }
 
 export default function Signup() {
-  const siteKey = process.env.RECAPTCHA_SITE_KEY;
-  const captchaRef = createRef<ReCaptcha>();
+  // const siteKey = process.env.RECAPTCHA_SITE_KEY;
+  // const captchaRef = createRef<ReCaptcha>();
 
   const handleSubmit = (
     values: SignupValues,
@@ -27,7 +27,7 @@ export default function Signup() {
   ) => {
     const results = {
       ...values,
-      captcha: captchaRef.current?.getValue(),
+      // captcha: captchaRef.current?.getValue(),
     };
     setTimeout(() => {
       alert(JSON.stringify(results, null, 2));
