@@ -1,13 +1,12 @@
 import type { NextPage } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import error404 from '../public/404/error-404.svg'
 
 const Page404: NextPage = () => {
     return (
         <div className='bg-404 bg-cover flex flex-col items-center min-h-screen p-12 bg-gray-50 dark:bg-gray-900 '>
             <Image
-                src={error404}
+                src='/404/error-404.svg'
                 alt='Not found'
                 height={300}
                 width={300}

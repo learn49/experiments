@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 .bg-404{
-    background-image: url("../public/404/bg.png");
+    background-image: url("/404/bg.png");
 }
