@@ -1,66 +1,60 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { request } from 'graphql-request'
-import useSWR from 'swr'
 import { useRouter } from 'next/router'
+import { useQuery } from 'urql'
 
-const fetcher = (query: string) =>
-  request('https://api.learn49.com/graphql', query)
-
+const ACCOUNT_QUERY = `
+      query($domain: String!){
+          account: getAccountSettingsByDomain(domain: $domain){
+            id
+            friendlyName
+          }
+}
+`
 interface IAccount {
   id: string
   friendlyName: string
 }
-const AccountContext = createContext<IAccount | undefined>(undefined)
-
 interface Props {
   children: JSX.Element
   account: IAccount
 }
 
+const AccountContext = createContext<IAccount | undefined>(undefined)
+
 export const AccountProvider = ({ children, account }: Props) => {
   const router = useRouter()
   const slug = router.query.slug
-  const [customData, setCustomData] = useState<any>(account)
-  const { data, error } = useSWR<{ account: IAccount }>(
-    slug &&
-      `query{
-      account: getAccountSettingsByDomain(domain: "${slug}.learn49.com"){
-        id
-        friendlyName
-      }
-    }`,
-    fetcher,
-    {
-      isPaused: () => {
-        return !!account
-      },
-      /*revalidateIfStale: false,
-      refreshWhenHidden: false,
-      refreshWhenOffline: false,
-      revalidateOnMount: false,
-      revalidateOnFocus: false,*/
-      fallbackData: { account }
-    }
-  )
+  const [result, reexecuteQuery] = useQuery({
+    query: ACCOUNT_QUERY,
+    variables: {
+      domain: `${slug}.learn49.com`,
+    },
+    pause: !!account,
+  })
+  const [accountData, setAccountData] = useState<IAccount>(account)
+  const { data, fetching, error } = result
+
   useEffect(() => {
     if (account) {
-      setCustomData(account)
+      setAccountData(account)
     }
   }, [])
+
   useEffect(() => {
     if (data?.account) {
-      setCustomData(data.account)
+      setAccountData(data.account)
     }
   }, [data])
+
   if (error) {
     return <p>Account not found!</p>
   }
-  if (!data) {
+  if (fetching) {
     return <p>Loading...</p>
   }
   return (
-    <AccountContext.Provider value={customData}>
-      <pre>{JSON.stringify(customData)}</pre>
+    <AccountContext.Provider value={accountData}>
+      <pre>{JSON.stringify(data)}</pre>
       {children}
     </AccountContext.Provider>
   )
