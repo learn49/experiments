@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.bg-404{
+    background-image: url("/404/bg.png");
+}
