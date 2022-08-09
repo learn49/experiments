@@ -1,17 +1,19 @@
-import "../styles/globals.css";
-import type { AppProps } from "next/app";
-import { AccountProvider } from "../contexts/AccountContext";
-import { Provider } from "urql";
-import { client } from "../lib/graphql";
+import '../styles/globals.css'
+import type { AppProps } from 'next/app'
+import { AccountProvider } from '../contexts/AccountContext'
+import { withUrqlClient } from 'next-urql'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <Provider value={client}>
-      <AccountProvider account={pageProps.account}>
-        <Component {...pageProps} />
-      </AccountProvider>
-    </Provider>
-  );
+    <AccountProvider account={pageProps.account}>
+      <Component {...pageProps} />
+    </AccountProvider>
+  )
 }
 
-export default MyApp;
+export default withUrqlClient(
+  ssr => ({
+    url: process.env.NEXT_PUBLIC_API,
+  }),
+  { ssr: false } // Important so we don't wrap our component in getInitialProps
+)(MyApp)
