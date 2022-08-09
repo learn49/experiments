@@ -1,10 +1,18 @@
-import request from 'graphql-request'
 import type { GetStaticProps, NextPage } from 'next'
+import { initUrqlClient, } from 'next-urql'
 import Head from 'next/head'
 import Link from 'next/link'
-import { useQuery } from 'urql'
+import { cacheExchange, dedupExchange, fetchExchange, ssrExchange} from 'urql'
 import { useAccount } from '../../contexts/AccountContext'
 
+const ACCOUNT_QUERY = `
+      query($domain: String!){
+          account: getAccountSettingsByDomain(domain: $domain){
+            id
+            friendlyName
+          }
+}
+`
 const Home: NextPage = () => {
   const account = useAccount()
   return (
@@ -33,20 +41,20 @@ export async function getStaticPaths() {
 
 export const getStaticProps: GetStaticProps = async context => {
   const slug = context?.params?.slug
+  const ssrCache = ssrExchange({ isClient: false })
+  const client = initUrqlClient(
+    {
+      url: process.env.NEXT_PUBLIC_API,
+      exchanges: [dedupExchange, cacheExchange, ssrCache, fetchExchange],
+    },
+    false
+  )
   try {
-    const { account } = await request(
-      'https://api.learn49.com/graphql',
-      `query{
-          account: getAccountSettingsByDomain(domain: "${slug}.learn49.com"){
-            id
-            friendlyName
-          }
-  }`
-    )
+    const result = await client?.query(ACCOUNT_QUERY, { domain: `${slug}.learn49.com` }).toPromise()
+    const data = result?.data
+    const { account } = data
     return {
-      props: {
-        account,
-      },
+      props: { account, urqlState: ssrCache.extractData() },
       revalidate: 60,
     }
   } catch (err) {}
